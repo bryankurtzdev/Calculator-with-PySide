@@ -4,7 +4,7 @@ import qdarkstyle
 from main_window import MainWindow
 from display import Display
 from info import Info
-from buttons import Button
+from buttons import Button, ButtonsGrid
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
@@ -26,15 +26,19 @@ if __name__ == '__main__':
 
     # Info
     info = Info('2.0 ^ 10.0 = 1024')
-    window.addToVLayout(info)
+    window.addWidgetToVLayout(info)
 
     # Display
     display = Display()
-    window.addToVLayout(display)
+    window.addWidgetToVLayout(display)
+
+    # Grid
+    buttonsGrid = ButtonsGrid()
+    window.vLayout.addLayout(buttonsGrid)
 
     # Button
     button = Button()
-    window.addToVLayout(button)
+    buttonsGrid.addWidget(button)
 
     # Executa tudo
     window.adjustFixedSize()
