@@ -10,6 +10,7 @@ from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
 
 
+
 def setupTheme(app):
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyside6())
 
