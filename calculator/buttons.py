@@ -36,3 +36,5 @@ class ButtonsGrid(QGridLayout):
                     self.addWidget(button, rowNumber, 0, 1, 2)
                 else:
                     self.addWidget(button, rowNumber, colNumber)
+
+                button.clicked.connect(lambda: print(123))
