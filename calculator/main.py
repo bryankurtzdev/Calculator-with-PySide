@@ -39,7 +39,6 @@ if __name__ == '__main__':
 
     # Button
     button = Button()
-    buttonsGrid.addWidget(button)
 
     # Executa tudo
     window.adjustFixedSize()
