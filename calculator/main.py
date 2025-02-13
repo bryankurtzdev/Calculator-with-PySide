@@ -1,6 +1,6 @@
 import sys
-import qdarkstyle
 
+from styles import setupTheme
 from main_window import MainWindow
 from display import Display
 from info import Info
@@ -10,9 +10,6 @@ from PySide6.QtWidgets import QApplication
 from variables import WINDOW_ICON_PATH
 
 
-
-def setupTheme(app):
-    app.setStyleSheet(qdarkstyle.load_stylesheet_pyside6())
 
 if __name__ == '__main__':
     # Cria Aplicacao

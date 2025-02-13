@@ -2,8 +2,9 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtWidgets import QPushButton, QGridLayout
 from PySide6.QtCore import Slot
+from styles import applySpecialStyle
 from variables import MEDIUM_FONT_SIZE, BIG_FONT_SIZE
-from utils import isNumOrDot, isEmpty, isValidNumber
+from utils import isValidNumber
 
 
 if TYPE_CHECKING:
@@ -48,7 +49,7 @@ class ButtonsGrid(QGridLayout):
     def equation(self, value):
         self._equation = value
         self.info.setText(value)
-        
+
     def _makeGrid(self):
         for rowNumber, rowData in enumerate(self._gridMask):
             for colNumber, buttonText in enumerate(rowData):
@@ -56,19 +57,27 @@ class ButtonsGrid(QGridLayout):
                     continue
                 
                 button = Button(buttonText)
-   
+
+                applySpecialStyle(button, buttonText)
+                
                 if buttonText == '0':
                     self.addWidget(button, rowNumber, 0, 1, 2)
                 else:
                     self.addWidget(button, rowNumber, colNumber)
 
-                buttonSlot = self._makeButtonDisplaySlot(
+                slot = self._makeSlot(
                     self._insertButtonTextTodisplay,
                     button,
                 )
-                button.clicked.connect(buttonSlot)
+                self._connnectButtonClicked(button, slot)
 
-    def _makeButtonDisplaySlot(self, func, *args, **kwargs):
+    def _connnectButtonClicked(self, button, slot):
+        button.clicked.connect(slot)
+
+    def _configSpecialButton(self, button):
+        text = button.text()
+
+    def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
         def realSlot(_):
             func(*args, **kwargs)
