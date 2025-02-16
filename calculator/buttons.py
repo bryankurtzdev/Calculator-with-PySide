@@ -59,26 +59,29 @@ class ButtonsGrid(QGridLayout):
                 button = Button(buttonText)
 
                 applySpecialStyle(button, buttonText)
+
                 
                 if buttonText == '0':
                     self.addWidget(button, rowNumber, 0, 1, 2)
                 else:
                     self.addWidget(button, rowNumber, colNumber)
 
+                self._configSpecialButton(button)
+                
                 slot = self._makeSlot(
                     self._insertButtonTextTodisplay,
                     button,
                 )
-                self._connnectButtonClicked(button, slot)
+                self._connectButtonClicked(button, slot)
 
-    def _connnectButtonClicked(self, button, slot):
+    def _connectButtonClicked(self, button, slot):
         button.clicked.connect(slot)
 
     def _configSpecialButton(self, button):
         text = button.text()
 
         if text == 'C':
-            self._connnectButtonClicked(button, self._clear)
+            self._connectButtonClicked(button, self._clear)
 
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
@@ -96,5 +99,5 @@ class ButtonsGrid(QGridLayout):
         self.display.insert(buttonText)
         
     def _clear(self):
-        print('Vou fazer outra coisa aqui, Essa e a mensagem')
+        print('Vou fazer outra coisa aqui')
         self.display.clear()
