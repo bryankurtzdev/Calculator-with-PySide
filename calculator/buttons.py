@@ -77,6 +77,9 @@ class ButtonsGrid(QGridLayout):
     def _configSpecialButton(self, button):
         text = button.text()
 
+        if text == 'C':
+            self._connnectButtonClicked(button, self._clear)
+
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
         def realSlot(_):
@@ -92,3 +95,6 @@ class ButtonsGrid(QGridLayout):
 
         self.display.insert(buttonText)
         
+    def _clear(self):
+        print('Vou fazer outra coisa aqui, Essa e a mensagem')
+        self.display.clear()
