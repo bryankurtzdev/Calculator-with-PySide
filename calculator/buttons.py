@@ -39,7 +39,14 @@ class ButtonsGrid(QGridLayout):
         self.display = display
         self.info = info
         self._equation = ''
+        self._equationInitialText = 'Sua conta'
+        self._left = None
+        self._right = None
+        self._operator = None
+
+        self.equation = self._equationInitialText
         self._makeGrid()
+
 
     @property
     def equation(self):
@@ -67,7 +74,7 @@ class ButtonsGrid(QGridLayout):
                     self.addWidget(button, rowNumber, colNumber)
 
                 self._configSpecialButton(button)
-                
+
                 slot = self._makeSlot(
                     self._insertButtonTextTodisplay,
                     button,
@@ -82,6 +89,12 @@ class ButtonsGrid(QGridLayout):
 
         if text == 'C':
             self._connectButtonClicked(button, self._clear)
+
+        if text in '+-/*':
+
+            self._connectButtonClicked(
+                button,
+                self._makeSlot(self._operatorClicked, button))
 
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
@@ -99,5 +112,26 @@ class ButtonsGrid(QGridLayout):
         self.display.insert(buttonText)
         
     def _clear(self):
-        print('Vou fazer outra coisa aqui')
+        self._left = None
+        self._right = None
+        self._operator = None
+        self.equation = self._equationInitialText
         self.display.clear()
+
+    def _operatorClicked(self, button):
+        buttonText = button.text() # + - * /
+        displayText = self.display.text() # devera ser meu numero _left
+        self.display.clear() # limpa o display
+
+        # Se a pessoa clicou em um operador e nao tem nada no display
+        if not isValidNumber(displayText) and self._left is None:
+            print('Nao e nada para passar para a esquerda')
+            return
+        
+        # Se houver algo no numero da esquerda,
+        # nao fazemos nada. Aguardaremos o numero da direita
+        if self._left is None:
+            self._left = float(displayText)
+
+        self._operator = buttonText
+        self.equation = f'{self._left} {self._operator} ??'
