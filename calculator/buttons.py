@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QPushButton, QGridLayout
 from PySide6.QtCore import Slot
 from styles import applySpecialStyle
 from variables import MEDIUM_FONT_SIZE, BIG_FONT_SIZE
+from main_window import MainWindow
 from utils import isValidNumber
 
 
@@ -27,7 +28,7 @@ class Button(QPushButton):
         
     
 class ButtonsGrid(QGridLayout):
-    def __init__(self, display: 'Display', info:'Info', *args, **kwargs) -> None:
+    def __init__(self, display: 'Display', info:'Info', window: 'MainWindow', *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self._gridMask = [
@@ -39,6 +40,7 @@ class ButtonsGrid(QGridLayout):
         ]
         self.display = display
         self.info = info
+        self.window = window
         self._equation = ''
         self._equationInitialText = 'Sua conta'
         self._left = None
@@ -132,7 +134,7 @@ class ButtonsGrid(QGridLayout):
 
         # Se a pessoa clicou em um operador e nao tem nada no display
         if not isValidNumber(displayText) and self._left is None:
-            print('Nao e nada para passar para a esquerda')
+            self._showError('Nao ha nada para passar para a esquerda')
             return
         
         # Se houver algo no numero da esquerda,
@@ -159,9 +161,9 @@ class ButtonsGrid(QGridLayout):
                 result = eval(self.equation)
         
         except ZeroDivisionError:
-            self.equation = 'Zero Division Error'
+            self._showError('Zero Division Error')
         except OverflowError:
-            print('Numero muito grande')
+            self._showError('Numero muito grande')
         
         self.display.clear()
         self.info.setText(f'{self.equation} = {result}')
@@ -170,3 +172,9 @@ class ButtonsGrid(QGridLayout):
 
         if result == 'error':
             self._left = None
+
+    def _showError(self, msg):
+        msgBox = self.window.makeMsgBox()
+        msgBox.setText(msg)
+        msgBox.setIcon(msgBox.Icon.NoIcon)
+        msgBox.exec()
