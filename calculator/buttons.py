@@ -91,6 +91,9 @@ class ButtonsGrid(QGridLayout):
         if text == 'C':
             self._connectButtonClicked(button, self._clear)
 
+        if text == '◀':
+            self._connectButtonClicked(button, self.display.backspace)
+
         if text in '+-/*^':
             self._connectButtonClicked(
                 button,
@@ -98,6 +101,7 @@ class ButtonsGrid(QGridLayout):
             
         if text == '=':
             self._connectButtonClicked(button, self._eq)
+
 
     def _makeSlot(self, func, *args, **kwargs):
         @Slot(bool)
