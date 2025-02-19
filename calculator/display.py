@@ -30,7 +30,7 @@ class Display(QLineEdit):
         isDelete = key in [KEYS.Key_Backspace, KEYS.Key_Return]
         isEsc = key in [KEYS.Key_Escape, KEYS.Key_Return]
 
-        if isEnter:
+        if isEnter or text == '=':
             self.eqPressed.emit()
             return event.ignore()
     
@@ -38,7 +38,7 @@ class Display(QLineEdit):
             self.delPressed.emit()
             return event.ignore()
         
-        if isDelete:
+        if isDelete or text.upper() == 'C':
             self.clearPressed.emit()    
             return event.ignore()
         
