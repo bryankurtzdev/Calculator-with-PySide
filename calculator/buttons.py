@@ -106,7 +106,7 @@ class ButtonsGrid(QGridLayout):
         if text in '+-/*^':
             self._connectButtonClicked(
                 button,
-                self._makeSlot(self._configLeftOp, button))
+                self._makeSlot(self._configLeftOp, text))
             
         if text == '=':
             self._connectButtonClicked(button, self._eq)
@@ -118,6 +118,7 @@ class ButtonsGrid(QGridLayout):
             func(*args, **kwargs)
         return realSlot
 
+    @Slot()
     def _insertToDisplay(self, text):
         newDisplayValue = self.display.text() + text
 
@@ -125,14 +126,16 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(text)
-        
+
+    @Slot()    
     def _clear(self):
         self._left = None
         self._right = None
         self._operator = None
         self.equation = self._equationInitialText
         self.display.clear()
-
+    
+    @Slot()
     def _configLeftOp(self, text):
         displayText = self.display.text() # devera ser meu numero _left
         self.display.clear() # limpa o display
