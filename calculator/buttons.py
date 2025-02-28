@@ -64,7 +64,7 @@ class ButtonsGrid(QGridLayout):
 
         self.display.eqPressed.connect(self._eq)
         self.display.clearPressed.connect(self._clear)
-        self.display.delPressed.connect(self.display.backspace)
+        self.display.delPressed.connect(self.display._backspace)
         self.display.inputPressed.connect(self._insertToDisplay)
         self.display.OperatorPressed.connect(self._configLeftOp)
 
@@ -126,6 +126,7 @@ class ButtonsGrid(QGridLayout):
             return
 
         self.display.insert(text)
+        self.display.setFocus()
 
     @Slot()    
     def _clear(self):
@@ -134,11 +135,13 @@ class ButtonsGrid(QGridLayout):
         self._operator = None
         self.equation = self._equationInitialText
         self.display.clear()
+        self.display.setFocus()
     
     @Slot()
     def _configLeftOp(self, text):
         displayText = self.display.text() # devera ser meu numero _left
         self.display.clear() # limpa o display
+        self.display.setFocus()
 
         # Se a pessoa clicou em um operador e nao tem nada no display
         if not isValidNumber(displayText) and self._left is None:
@@ -152,6 +155,7 @@ class ButtonsGrid(QGridLayout):
 
         self._operator = text
         self.equation = f'{self._left} {self._operator} ??'
+        
 
     @Slot()
     def _eq(self):
@@ -180,6 +184,7 @@ class ButtonsGrid(QGridLayout):
         self.info.setText(f'{self.equation} = {result}')
         self._left = result
         self._right = None
+        self.display.setFocus()
 
         if result == 'error':
             self._left = None
@@ -199,3 +204,7 @@ class ButtonsGrid(QGridLayout):
         msgBox = self.window._makeDialog()
         msgBox.setIcon(msgBox.Icon.NoIcon)
         msgBox.exec()
+
+    def _backspace(self):
+        self.display.backspace()
+        self.display.setFocus()
