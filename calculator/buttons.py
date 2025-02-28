@@ -64,7 +64,7 @@ class ButtonsGrid(QGridLayout):
 
         self.display.eqPressed.connect(self._eq)
         self.display.clearPressed.connect(self._clear)
-        self.display.delPressed.connect(self.display._backspace)
+        self.display.delPressed.connect(self._backspace)
         self.display.inputPressed.connect(self._insertToDisplay)
         self.display.OperatorPressed.connect(self._configLeftOp)
 
@@ -193,6 +193,11 @@ class ButtonsGrid(QGridLayout):
         msgBox = self.window.makeMsgBox()
         msgBox.setText(msg)
         return msgBox
+    
+    @Slot()
+    def _backspace(self):
+        self.display.backspace()
+        self.display.setFocus()
 
     def _showError(self, msg):
         msgBox = self.window.makeMsgBox()
@@ -205,8 +210,4 @@ class ButtonsGrid(QGridLayout):
         msgBox = self.window._makeDialog()
         msgBox.setIcon(msgBox.Icon.NoIcon)
         msgBox.exec()
-        self.display.setFocus()
-
-    def _backspace(self):
-        self.display.backspace()
         self.display.setFocus()
