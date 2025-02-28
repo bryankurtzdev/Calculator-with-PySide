@@ -199,11 +199,13 @@ class ButtonsGrid(QGridLayout):
         msgBox.setText(msg)
         msgBox.setIcon(msgBox.Icon.NoIcon)
         msgBox.exec()
+        self.display.setFocus()
 
     def _showInfo(self, msg):
         msgBox = self.window._makeDialog()
         msgBox.setIcon(msgBox.Icon.NoIcon)
         msgBox.exec()
+        self.display.setFocus()
 
     def _backspace(self):
         self.display.backspace()
